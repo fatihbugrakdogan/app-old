@@ -86,24 +86,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       // Clear any cookies by setting them to expire
       try {
-        // Check if we're on Railway or custom domain
-        const isRailway = window.location.hostname.includes('railway.app') || window.location.hostname.includes('up.railway.app');
+        // Specifically clear the auth-token cookie with the same settings as login
         const isProduction = window.location.hostname.includes('workino.co');
-        
-        // Railway'de domain ayarı yapmıyoruz, diğer durumlarda domain belirtiyoruz
-        const domain = isRailway ? '' : (isProduction ? '.workino.co' : 'localhost');
-        const secure = isProduction || isRailway;
-        const sameSite = (isProduction || isRailway) ? 'none' : 'lax';
+        const domain = isProduction ? '.workino.co' : 'localhost';
+        const secure = isProduction;
+        const sameSite = isProduction ? 'none' : 'lax';
         
         // Clear auth-token cookie specifically
-        const domainPart = domain ? `; domain=${domain}` : '';
-        document.cookie = `auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/${domainPart}; secure=${secure}; samesite=${sameSite}`;
+        document.cookie = `auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}; secure=${secure}; samesite=${sameSite}`;
         
         // Also clear any other cookies
         document.cookie.split(";").forEach(function(c) { 
           const cookieName = c.split("=")[0].trim();
           if (cookieName) {
-            document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/${domainPart}`;
+            document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}`;
           }
         });
       } catch (error) {

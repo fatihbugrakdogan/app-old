@@ -1,15 +1,15 @@
 "use client";
 
 import {
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
-import { StepFooter } from "./components/step-footer";
 import { SourceProviders } from "./components/target-providers";
 import { AccessTokenInput } from "./components/target-token";
 import { SourceWorkspace } from "./components/target-workspaces";
+import { StepFooter } from "./components/step-footer";
 
 export default function TargetStep({
   onNext,
@@ -23,7 +23,7 @@ export default function TargetStep({
       <CardHeader>
         <CardTitle>Target Configuration</CardTitle>
         <CardDescription>
-          Configure your Asana target workspace and access token
+          Configure your project target and workspace
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">

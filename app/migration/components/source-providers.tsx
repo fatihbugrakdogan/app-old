@@ -6,10 +6,10 @@ import { useAtom } from "jotai";
 import Image from "next/image";
 import { useEffect } from "react";
 import {
-    sourceAccessTokenAtom,
-    sourceProviderAtom,
-    sourceWorkspaceAtom,
-    sourcesAtom,
+  sourceAccessTokenAtom,
+  sourceProviderAtom,
+  sourceWorkspaceAtom,
+  sourcesAtom,
 } from "../atom";
 // Interfaces
 import { Platform } from "../atom";
@@ -38,15 +38,13 @@ function SourceList({
       onValueChange={onSourceChange}
       className="grid grid-cols-1 md:grid-cols-2 gap-4"
     >
-      {sources
-        .filter((src) => src.id === "asana")
-        .map((src) => (
-          <SourceItem
-            key={src.id}
-            source={src}
-            isSelected={selectedSource.id === src.id}
-          />
-        ))}
+      {sources.map((src) => (
+        <SourceItem
+          key={src.id}
+          source={src}
+          isSelected={selectedSource.id === src.id}
+        />
+      ))}
     </RadioGroup>
   );
 }

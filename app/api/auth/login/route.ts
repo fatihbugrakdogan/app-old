@@ -37,18 +37,14 @@ export async function POST(request: Request) {
     console.log("cookie are setting...");
 
     const isProduction = process.env.NODE_ENV === "production";
-    const isRailway = process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID;
-    
-    // Railway'de domain ayarı yapmıyoruz (default domain kullanılır)
-    const cookieDomain = isRailway ? undefined : (isProduction ? ".workino.co" : "localhost");
 
     response.cookies.set("auth-token", accessToken, {
       httpOnly: true,
-      secure: Boolean(isProduction || isRailway), // Railway also needs secure cookies
-      sameSite: (isProduction || isRailway) ? "none" : "lax", // Railway needs sameSite: "none"
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 60 * 60 * 24, // 1 day
       path: "/",
-      ...(cookieDomain && { domain: cookieDomain }),
+      domain: isProduction ? ".workino.co" : "localhost",
     });
 
     console.log("cookie are set");

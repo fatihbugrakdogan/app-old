@@ -15,7 +15,7 @@ import UserMappingStep from "./user-mapping";
 
 const steps = [
   {
-    label: "Source Asana",
+    label: "Source",
     component: ({
       onNext,
       onPrev,
@@ -25,7 +25,7 @@ const steps = [
     }) => <SourceStep onNext={onNext} onPrev={onPrev} />,
   },
   {
-    label: "Target Asana",
+    label: "Target",
     component: ({
       onNext,
       onPrev,

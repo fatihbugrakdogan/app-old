@@ -1,6 +1,6 @@
 // app/api/session/route.js
+import { NextResponse, NextRequest } from "next/server";
 import { parse } from "cookie";
-import { NextRequest, NextResponse } from "next/server";
 
 // Call your FastAPI verify/endpoint that returns user info, e.g. { "username": "alice" }
 const FASTAPI_VERIFY_ENDPOINT = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/verify-token`;
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   // 1) Read cookies from request
   const cookieHeader = request.headers.get("cookie") || "";
   const cookies = parse(cookieHeader);
-  const token = cookies["auth-token"];
+  const token = cookies.token;
 
   // 2) If no token, return 401
   if (!token) {

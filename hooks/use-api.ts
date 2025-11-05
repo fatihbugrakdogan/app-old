@@ -1,5 +1,4 @@
-import { useCallback, useState } from "react";
-import { PROTECTED_ENDPOINTS } from "@/constants/protected-endpoints";
+import { useState, useCallback } from "react";
 
 interface ApiOptions {
   method?: string;
@@ -8,7 +7,6 @@ interface ApiOptions {
   /**
    * Indicates whether this endpoint requires authentication
    * (e.g., needs an HTTP-only cookie with a token).
-   * If not specified, will auto-detect based on endpoint.
    */
   requiresAuth?: boolean;
 }
@@ -30,37 +28,23 @@ export const useAPI = () => {
           method = "GET",
           body,
           headers = {},
-          requiresAuth,
+          requiresAuth = false,
         } = options;
-
-        // Auto-detect if endpoint requires authentication
-        const needsAuth = requiresAuth !== undefined 
-          ? requiresAuth 
-          : PROTECTED_ENDPOINTS.some(protectedEndpoint => 
-              endpoint.startsWith(protectedEndpoint)
-            );
-
-        const backendBase = (process.env.NEXT_PUBLIC_BACKEND_API_URL || "").replace(/\/$/, "");
-        const shouldProxy = needsAuth;
-        const targetUrl = shouldProxy
-          ? `/api/proxy${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`
-          : `${backendBase}${endpoint}`;
 
         // Merge default & custom headers
         const finalHeaders: Record<string, string> = {
           "Content-Type": "application/json",
           ...headers,
         };
-        
         const response = await fetch(
-          targetUrl,
+          `${process.env.NEXT_PUBLIC_BACKEND_API_URL}${endpoint}`,
           {
             method,
             headers: {
               ...finalHeaders,
             },
             body: body ? JSON.stringify(body) : undefined,
-            credentials: needsAuth ? "include" : "omit", // Include cookies when auth is needed
+            credentials: requiresAuth ? "include" : "omit", // Include cookies only when auth is required
           }
         );
 

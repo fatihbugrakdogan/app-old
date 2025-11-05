@@ -1,10 +1,10 @@
 "use client";
 
 import {
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { SourceProviders } from "./components/source-providers";
 import { AccessTokenInput } from "./components/source-token";
@@ -23,7 +23,7 @@ export default function SourceStep({
       <CardHeader>
         <CardTitle>Source Configuration</CardTitle>
         <CardDescription>
-          Configure your Asana source workspace and access token
+          Configure your project source and workspace
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">

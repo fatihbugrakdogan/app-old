@@ -63,10 +63,6 @@ export const userMappingRuleAtom = atom<UserMappingRule>({
 
 export const userMappingsAtom = atom<UserMapping[]>([]);
 
-// Migration configuration atoms
-export const tenantAtom = atom<string>("");
-export const runIdAtom = atom<string>("");
-
 export interface Platform {
   id: string;
   name: string;

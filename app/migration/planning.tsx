@@ -1,9 +1,9 @@
 import ProjectSelectionCard from "@/app/migration/components/projects";
 import {
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import { useAPI } from "@/hooks/use-api";
 import { useAtom } from "jotai";
@@ -12,18 +12,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import {
-  runIdAtom,
-  sourceAccessTokenAtom,
-  sourceProviderAtom,
-  sourcesAtom,
-  sourceWorkspaceAtom,
-  targetAccessTokenAtom,
-  targetProviderAtom,
-  targetWorkspaceAtom,
-  tenantAtom,
-  userMappingsAtom,
+    sourceAccessTokenAtom,
+    sourceProviderAtom,
+    sourcesAtom,
+    sourceWorkspaceAtom,
+    targetAccessTokenAtom,
+    targetProviderAtom,
+    targetWorkspaceAtom,
+    userMappingsAtom,
 } from "./atom";
-import { MigrationConfig } from "./components/migration-config";
 import { StepFooter } from "./components/step-footer";
 import { Project } from "./types";
 
@@ -51,8 +48,6 @@ export default function PlanningStep({
   const [{ id: sourceWorkspaceId }] = useAtom(sourceWorkspaceAtom);
   const [{ id: targetWorkspaceId }] = useAtom(targetWorkspaceAtom);
   const [userMappings] = useAtom(userMappingsAtom);
-  const [tenant] = useAtom(tenantAtom);
-  const [runId] = useAtom(runIdAtom);
   const { callAPI } = useAPI();
   const [selectedItems] = useState<string[]>([
     "task",
@@ -109,22 +104,6 @@ export default function PlanningStep({
   const handleStartMigration = async () => {
     setIsStarting(true);
 
-    // Validate Asana-only migration
-    if (sourceProvider.id !== "asana" || targetProvider !== "asana") {
-      console.error("Only Asana to Asana migration is supported");
-      alert("Only Asana to Asana migration is supported");
-      setIsStarting(false);
-      return;
-    }
-
-    // Ensure tenant is set (should be auto-generated)
-    if (!tenant || tenant.trim() === "") {
-      console.error("Tenant field is required");
-      alert("Tenant field is required");
-      setIsStarting(false);
-      return;
-    }
-
     console.log("targetWorkspaceId", targetWorkspaceId);
     try {
       // Get only the users that are set to migrate
@@ -152,8 +131,6 @@ export default function PlanningStep({
         entities: selectedItems,
         project_ids: selectedProjects.map((p) => p.gid),
         user_mappings: userMappingsList,
-        tenant: tenant,
-        run_id: runId || undefined, // Only include if provided
       };
 
       console.log("payload", payload);
@@ -184,7 +161,7 @@ export default function PlanningStep({
       <CardHeader>
         <CardTitle>Plan your migration</CardTitle>
         <CardDescription>
-          Configure your Asana to Asana migration settings and select the projects you want to migrate.
+          Select the projects you want to migrate.
           <Link
             href="#"
             className="inline-flex items-center hover:underline"
@@ -196,8 +173,7 @@ export default function PlanningStep({
           </Link>
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <MigrationConfig />
+      <CardContent className="p-0">
         <ProjectSelectionCard
           sourcePlatform={sourcePlatform}
           projects={projects}
@@ -211,7 +187,7 @@ export default function PlanningStep({
         onPrev={onPrev}
         isLastStep
         isStarting={isStarting}
-        disableNext={selectedProjects.length === 0 || !tenant.trim()}
+        disableNext={selectedProjects.length === 0}
       />
     </>
   );

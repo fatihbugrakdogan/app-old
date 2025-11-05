@@ -6,13 +6,6 @@ export async function GET(request: Request) {
     // The user's browser will include the cookie automatically if we specify `credentials: "include"`.
     // But in a Route Handler, we need to pass cookies ourselves, or parse them from the request.
     const cookieHeader = request.headers.get("cookie");
-    console.log("Cookie header received:", cookieHeader);
-    
-    if (!cookieHeader || !cookieHeader.includes("auth-token")) {
-      console.log("No auth-token found in cookies");
-      return new NextResponse("No auth token found in cookies or headers.", { status: 401 });
-    }
-    
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/verify`,
       {
