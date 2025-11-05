@@ -36,17 +36,20 @@ export const useAPI = () => {
           "Content-Type": "application/json",
           ...headers,
         };
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API_URL}${endpoint}`,
-          {
-            method,
-            headers: {
-              ...finalHeaders,
-            },
-            body: body ? JSON.stringify(body) : undefined,
-            credentials: requiresAuth ? "include" : "omit", // Include cookies only when auth is required
-          }
-        );
+        
+        // Use the proxy route for authenticated requests, direct URL for others
+        const apiUrl = requiresAuth 
+          ? `/api/proxy${endpoint}` 
+          : `${process.env.NEXT_PUBLIC_BACKEND_API_URL}${endpoint}`;
+        
+        const response = await fetch(apiUrl, {
+          method,
+          headers: {
+            ...finalHeaders,
+          },
+          body: body ? JSON.stringify(body) : undefined,
+          credentials: requiresAuth ? "include" : "omit", // Include cookies only when auth is required
+        });
 
         if (!response.ok) {
           console.log(response);
