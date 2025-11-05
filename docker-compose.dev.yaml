@@ -1,0 +1,38 @@
+services:
+  next-app:
+    container_name: app
+    build:
+      context: ./app
+      dockerfile: dev.Dockerfile
+
+    # Set environment variables directly in the compose file
+    environment:
+      ENV_VARIABLE: ${ENV_VARIABLE}
+      NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+
+    # Set environment variables based on the .env file
+    env_file:
+      - .env
+    volumes:
+      - ./next-app/src:/app/src
+      - ./next-app/public:/app/public
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - my_network
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    command: >
+      tunnel --no-autoupdate run --token eyJhIjoiNGY3Yzc3YzE2Zjg0ZTY5OGMwM2ZiNzE5MWViMTY4ZjYiLCJ0IjoiNTdlZTQwMWYtZTg1NC00NWI2LTgxMzAtZjQwMzRlMjUxNmZkIiwicyI6Ik9USTFZelU0TVdNdE1HVTJOQzAwWkdFM0xUZ3pNell0TUdZMll6azNPREUxWWpjMCJ9
+    restart: unless-stopped
+
+  # Add more containers below (nginx, postgres, etc.)
+
+# Define a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+networks:
+  my_network:
+    external: true
