@@ -19,7 +19,6 @@ import {
     targetAccessTokenAtom,
     targetProviderAtom,
     targetWorkspaceAtom,
-    userMappingsAtom,
 } from "./atom";
 import { StepFooter } from "./components/step-footer";
 import { Project } from "./types";
@@ -47,7 +46,6 @@ export default function PlanningStep({
   const [{ accessToken: sourceAccessToken }] = useAtom(sourceAccessTokenAtom);
   const [{ id: sourceWorkspaceId }] = useAtom(sourceWorkspaceAtom);
   const [{ id: targetWorkspaceId }] = useAtom(targetWorkspaceAtom);
-  const [userMappings] = useAtom(userMappingsAtom);
   const { callAPI } = useAPI();
   const [selectedItems] = useState<string[]>([
     "task",
@@ -106,17 +104,6 @@ export default function PlanningStep({
 
     console.log("targetWorkspaceId", targetWorkspaceId);
     try {
-      // Get only the users that are set to migrate
-      const migratingUsers = userMappings.filter(mapping => 
-        mapping.migrating === "yes" || mapping.migrating === "Yes"
-      );
-
-      // Transform user mappings to list of dict format: [{ source_email: "...", target_email: "..." }]
-      const userMappingsList = migratingUsers.map(mapping => ({
-        source_email: mapping.source_email,
-        target_email: mapping.target_email
-      }));
-
       const payload = {
         source: {
           access_token: sourceAccessToken,
@@ -130,7 +117,7 @@ export default function PlanningStep({
         },
         entities: selectedItems,
         project_ids: selectedProjects.map((p) => p.gid),
-        user_mappings: userMappingsList,
+        user_mappings: [],
       };
 
       console.log("payload", payload);

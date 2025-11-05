@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import PlanningStep from "./planning";
 import SourceStep from "./source";
 import TargetStep from "./target";
-import UserMappingStep from "./user-mapping";
 
 const steps = [
   {
@@ -33,16 +32,6 @@ const steps = [
       onNext: () => void;
       onPrev: () => void;
     }) => <TargetStep onNext={onNext} onPrev={onPrev} />,
-  },
-  {
-    label: "User Mapping",
-    component: ({
-      onNext,
-      onPrev,
-    }: {
-      onNext: () => void;
-      onPrev: () => void;
-    }) => <UserMappingStep onNext={onNext} onPrev={onPrev} />,
   },
   {
     label: "Migration Planning",
