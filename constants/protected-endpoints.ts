@@ -1,16 +1,25 @@
-/**
- * List of backend API endpoints that are allowed to be proxied.
- * Only requests to these endpoints will be forwarded through the proxy.
- */
 export const PROTECTED_ENDPOINTS = [
-  "/api/migrations",
-  "/api/migration",
-  "/api/providers",
-  "/api/workspaces",
-  "/api/projects",
-  "/api/users",
-  "/api/mappings",
-  "/api/health",
-  "/api/status",
+  "/migration-sources",
+  "/migration-token-check",
+  "/migration-workspaces",
+  "/migration-projects-csv",
+  "/get-current-user",
+  "/migration-projects-csv-upload",
+  "/migration-user-mapping-csv",
+  "/migration-user-mapping-csv-upload",
+  "/migration-items",
+  "/migration",
+  "/migration-status",
+  "/migration-projects",
+  "/migration-runs",
+  "/migration-issues",
+  "/get-migrations",
+  "/migrations",
+  "/dashboard-migration-metrics",
+  "/user/settings",
+  "/user/settings/profile",
+  "/user/settings/password",
+  "/user/settings/company",
+  "/api/templates",
 ];
 
